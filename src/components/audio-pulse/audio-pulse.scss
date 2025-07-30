@@ -1,0 +1,141 @@
+.audioPulse {
+  display: flex;
+  width: 24px;
+  justify-content: space-evenly;
+  align-items: center;
+  transition: all var(--transition-slow) var(--easing);
+
+  &>div {
+    background-color: var(--text-muted);
+    border-radius: 1000px;
+    width: 4px;
+    min-height: 4px;
+    border-radius: 1000px;
+    transition: all var(--transition-micro) var(--easing);
+    position: relative;
+
+    /* Premium glow effect */
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: var(--primary-accent);
+      border-radius: inherit;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      scale: 1.5;
+      transition: all var(--transition-quick) var(--easing);
+      pointer-events: none;
+    }
+  }
+
+  &.hover>div {
+    animation: hover-pulse 1.4s infinite alternate var(--easing);
+
+    &::after {
+      opacity: 0.3;
+      animation: glow-pulse 1.4s infinite alternate var(--easing);
+    }
+  }
+
+  height: 4px;
+  transition: opacity var(--transition-standard) var(--easing);
+  opacity: 0.6;
+
+  &.active {
+    opacity: 1;
+
+    &>div {
+      background-color: var(--primary-accent);
+      box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+
+      &::after {
+        opacity: 0.6;
+      }
+
+      /* Staggered animation for more dynamic effect */
+      &:nth-child(1) {
+        animation-delay: 0ms;
+      }
+
+      &:nth-child(2) {
+        animation-delay: 133ms;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 266ms;
+      }
+    }
+  }
+}
+
+@keyframes hover-pulse {
+  from {
+    transform: translateY(0);
+    background-color: var(--text-muted);
+  }
+
+  to {
+    transform: translateY(-3.5px);
+    background-color: var(--primary-accent);
+  }
+}
+
+@keyframes glow-pulse {
+  from {
+    opacity: 0.3;
+    scale: 1.2;
+  }
+
+  to {
+    opacity: 0.6;
+    scale: 1.8;
+  }
+}
+
+@keyframes pulse {
+  from {
+    scale: 1 1;
+    opacity: 0.8;
+  }
+
+  to {
+    scale: 1.2 1.6;
+    opacity: 1;
+  }
+}
+
+/* Enhanced active state with breathing effect */
+.audioPulse.active>div {
+  animation: pulse var(--transition-quick) ease-in-out infinite alternate;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .audioPulse {
+    width: 20px;
+
+    &>div {
+      width: 3px;
+      min-height: 3px;
+    }
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+  .audioPulse,
+  .audioPulse>div,
+  .audioPulse>div::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .audioPulse.hover>div {
+    transform: translateY(-2px);
+  }
+}
